@@ -54,7 +54,7 @@ def main() :
     image = read_image("son_goku.png")
     epsilon = 1e-5
     lambd = .5
-    L = 2
+    L = 1
     X = np.random.rand(image.shape[0], image.shape[1])
     print (X.shape)
     image_red = image[:,:,0]
