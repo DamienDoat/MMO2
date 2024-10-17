@@ -50,7 +50,7 @@ def read_image(image_path) :
     image = plt.imread(image_path)
     return image
 
-def main() :
+def question1() :
     image = read_image("son_goku.png")
     epsilon = 1e-5
     lambd = .5
@@ -71,5 +71,9 @@ def main() :
     X_new[:,:,2] = X_new_blue
     plt.imshow(X_new)
 
+def question2() :
+    
+
+    return
 if __name__ == "__main__" :
-    main()
+    question2()
