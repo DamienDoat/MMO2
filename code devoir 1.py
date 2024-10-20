@@ -6,37 +6,41 @@ def function(X, image, lambd) :
 
 def R(X) :
     to_return = 0
-    for i in range(2, len(X)) :
-        for j in range(2, np.shape(X)[1]-1) : 
+    for i in range(1, len(X)-1) :
+        for j in range(1, np.shape(X)[1]-1) : 
             to_return += (X[i+1][j] - X[i][j])**2 + (X[i][j+1] - X[i][j])**2
 
     return to_return
 
 def gradient(X, image, lambd) :
     to_return = np.zeros((np.shape(X)[0], np.shape(X)[1]))
-    for i in range(1, len(X)) :
-        for j in range(2, np.shape(X)[1]-1) :
+    for i in range(0, len(X)) :
+        for j in range(0, np.shape(X)[1]) :
             to_return[i][j] = X[i][j] - image[i][j]
     to_return = np.reshape(to_return, (np.shape(X)[0], np.shape(X)[1]))
     return to_return + R_prime(X)*lambd
 
 def R_prime(X) :
     to_return = np.zeros((np.shape(X)[0], np.shape(X)[1]))
-    for i in range(2, len(X)-1) :
-        for j in range(2, np.shape(X)[1]-1) :
+    for i in range(1, len(X)-1) :
+        for j in range(1, np.shape(X)[1]-1) :
             to_return[i][j] = 2*X[i][j]*4 - 2*X[i+1][j] - 2*X[i-1][j] - 2*X[i][j+1] - 2*X[i][j-1]
     return to_return
 
 def projected_gradient_method(X, image, epsilon, lambd, L) :
+    i=0
     while True :
-        plt.figure()
-        plt.imshow(X)
-        plt.show()
+        if i%20 == 0 :
+            plt.figure()
+            plt.imshow(X)
+            plt.show()
         print ('X:', X)
         print ('gradient:', gradient(X, image, lambd))
+        print ('gradient norm:', np.linalg.norm(gradient(X, image, lambd)))
+        print('biggest grad componant:', np.max(gradient(X, image, lambd)))
         X = X - gradient(X, image, lambd)/L
-        for i in range(1, len(X)) :
-            for j in range(1, np.shape(X)[1]) :
+        for i in range(0, len(X)) :
+            for j in range(0, np.shape(X)[1]) :
                 if X[i][j] < 0 :
                     X[i][j] = 0
                 if X[i][j] > 255 :
@@ -53,9 +57,9 @@ def read_image(image_path) :
 def question1() :
     image = read_image("son_goku.png")
     epsilon = 1e-5
-    lambd = .5
-    L = 1
-    X = np.random.rand(image.shape[0], image.shape[1])
+    lambd = 1
+    L = 1+4*lambd
+    X = np.random.rand(image.shape[0], image.shape[1]) * 255  # Initialize X in [0, 255]
     print (X.shape)
     image_red = image[:,:,0]
     image_green = image[:,:,1]
@@ -76,4 +80,4 @@ def question2() :
 
     return
 if __name__ == "__main__" :
-    question2()
+    question1()
