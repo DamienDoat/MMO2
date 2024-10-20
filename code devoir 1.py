@@ -28,37 +28,34 @@ def R_prime(X) :
     return to_return
 
 def projected_gradient_method(X, image, epsilon, lambd, L) :
-    i=0
+    k = 0
     while True :
-        if i%20 == 0 :
-            plt.figure()
-            plt.imshow(X)
-            plt.show()
+        grad = gradient(X, image, lambd)
+        frobenius_norm_grad = np.linalg.norm(grad)
+        k += 1
         print ('X:', X)
-        print ('gradient:', gradient(X, image, lambd))
-        print ('gradient norm:', np.linalg.norm(gradient(X, image, lambd)))
-        print('biggest grad componant:', np.max(gradient(X, image, lambd)))
-        X = X - gradient(X, image, lambd)/L
-        for i in range(0, len(X)) :
-            for j in range(0, np.shape(X)[1]) :
-                if X[i][j] < 0 :
-                    X[i][j] = 0
-                if X[i][j] > 255 :
-                    X[i][j] = 255
-        if np.linalg.norm(gradient(X, image, lambd)) < epsilon :
+        print ('gradient:', grad)
+        print ('gradient norm:', frobenius_norm_grad)
+        print('biggest grad componant:', np.max(grad))
+        X = X - grad / L
+        X = np.clip(X, 0, 255)
+        if np.linalg.norm(frobenius_norm_grad) < epsilon :
             break
     
     return X
 
-def read_image(image_path) :
+def read_image(image_path):
     image = plt.imread(image_path)
+    if image.max() <= 1:  # Normalize only if needed
+        image *= 255
     return image
+
 
 def question1() :
     image = read_image("son_goku.png")
     epsilon = 1e-5
-    lambd = 1
-    L = 1+4*lambd
+    lambd = .1
+    L = (1+4*lambd)*4
     X = np.random.rand(image.shape[0], image.shape[1]) * 255  # Initialize X in [0, 255]
     print (X.shape)
     image_red = image[:,:,0]
@@ -66,10 +63,10 @@ def question1() :
     image_blue = image[:,:,2]
     grad_X = gradient(X, image_red, lambd)
     print(grad_X)
-    X_new_red = projected_gradient_method(X, image_red, epsilon, lambd, L)
-    X_new_green = projected_gradient_method(X, image_green, epsilon, lambd, L)
-    X_new_blue = projected_gradient_method(X, image_blue, epsilon, lambd, L)
-    X_new = np.zeros((image.shape[0], image.shape[1], 3))
+    X_new_red = projected_gradient_method(X.copy(), image_red, epsilon, lambd, L)
+    X_new_green = projected_gradient_method(X.copy(), image_green, epsilon, lambd, L)
+    X_new_blue = projected_gradient_method(X.copy(), image_blue, epsilon, lambd, L)
+    X_new = np.zeros((image.shape[0], image.shape[1], 3), dtype=np.uint8)
     X_new[:,:,0] = X_new_red
     X_new[:,:,1] = X_new_green
     X_new[:,:,2] = X_new_blue
