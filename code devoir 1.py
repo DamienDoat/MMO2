@@ -77,17 +77,16 @@ def question1() :
     plt.imshow(X_new)
     plt.show()
 
-def gradient_q2 (alpha, X, m, b) :
+def gradient_q2 (alpha, X, m, b, thetas) :
     ###A FAIRE ENCORE###
-    to_return = np.zeros((alpha.shape[0], alpha.shape[1]))
-    for i in range(5) :
-        for j in range(m) :
-            #to_return[i] += 2*(alpha[i][j] - b[i][j])
-            break
+    to_return = np.zeros((3,5))
+    for l in range(3) :
+        for i in range(m) :
+            for k in range(5) :
+                to_return[l][k] += b[l][i]-alpha[l][k]*thetas[i][k]
 
     return to_return
             
-    return
             
 def pandemic_model(t, x):
         # Example model, replace with actual equations
@@ -135,12 +134,17 @@ def prox_func (x, y, L) :
 def proximal_gradient_method(m, X, b, functions, L, lambd) :
 
     alpha = np.zeros((3,5))
+    thetas = np.zeros((m,5))
+    for i in range(m) :
+        thetas[i,:] = functions(X[:,i])
+
     while True :
-        alpha = alpha - 1/L*gradient_q2(alpha, X, m, b)
+        grad = gradient_q2(alpha, X, m, b, thetas)
+        alpha = alpha - 1/L*grad
         alpha = prox(alpha,L,lambd)
-        if np.linalg.norm(gradient_q2(alpha,X, m, b)) < 1e-5 :
+        if np.linalg.norm(grad) < 1e-5 :
             break
-        break
+        #break
 
     return
 
@@ -174,7 +178,7 @@ def question2() :
 
     functions = all_functions
 
-    proximal_gradient_method(m, X, b, functions, L, lambd)
+    proximal_gradient_method(m, X.y, b, functions, L, lambd)
 
     return
 if __name__ == "__main__" :
