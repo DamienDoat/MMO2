@@ -48,29 +48,34 @@ def read_image(image_path):
     image = plt.imread(image_path)
     if image.max() <= 1:  # Normalize only if needed
         image *= 255
+        image = image.astype(np.uint8)
     return image
 
 
 def question1() :
     image = read_image("son_goku.png")
     epsilon = 1e-5
-    lambd = .1
+    lambd = 1
     L = (1+4*lambd)*4
-    X = np.random.rand(image.shape[0], image.shape[1]) * 255  # Initialize X in [0, 255]
-    print (X.shape)
+    X_red = image[:,:,0]
+    X_green = image[:,:,1]
+    X_blue = image[:,:,2]
     image_red = image[:,:,0]
     image_green = image[:,:,1]
     image_blue = image[:,:,2]
-    grad_X = gradient(X, image_red, lambd)
-    print(grad_X)
-    X_new_red = projected_gradient_method(X.copy(), image_red, epsilon, lambd, L)
-    X_new_green = projected_gradient_method(X.copy(), image_green, epsilon, lambd, L)
-    X_new_blue = projected_gradient_method(X.copy(), image_blue, epsilon, lambd, L)
+    #grad_X = gradient(X, image_red, lambd)
+    #print(grad_X)
+    X_new_red = projected_gradient_method(X_red, image_red, epsilon, lambd, L)
+    X_new_green = projected_gradient_method(X_green, image_green, epsilon, lambd, L)
+    X_new_blue = projected_gradient_method(X_blue, image_blue, epsilon, lambd, L)
     X_new = np.zeros((image.shape[0], image.shape[1], 3), dtype=np.uint8)
     X_new[:,:,0] = X_new_red
     X_new[:,:,1] = X_new_green
     X_new[:,:,2] = X_new_blue
+
+
     plt.imshow(X_new)
+    plt.show()
 
 def question2() :
     
