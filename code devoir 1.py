@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+from scipy import integrate as spi
 def function(X, image, lambd) :
     return np.sum((X - image)**2)/2 + R(X)*lambd
 
@@ -77,9 +77,102 @@ def question1() :
     plt.imshow(X_new)
     plt.show()
 
-def question2() :
+def gradient_q2 (alpha, m, b) :
+    ###A FAIRE ENCORE###
+    to_return = np.zeros((alpha.shape[0]))
+    for i in range(5) :
+        for j in range(m) :
+            to_return[i] += 2*(alpha[i][j] - b[i][j])
+
+    return to_return
+            
+    return
+            
+def pandemic_model(t, x):
+        # Example model, replace with actual equations
+        beta = 0.3
+        gamma = 0.1
+        S, I, R = x
+        dSdt = -beta * S * I
+        dIdt = beta * S * I - gamma * I
+        dRdt = gamma * I
+        return [dSdt, dIdt, dRdt]
+
+def prox(alpha, L, lambd) :
+    y = minimizer(alpha, L, lambd)
+    return y
+
+def minimizer(x, L, lambd) :
+
+    to_return = np.zeros(3)
+    y_negs = np.zeros(3)
+    y_pos = np.zeros(3)
     
+    y_pos[:] = x + lambd/L
+    y_negs[:] = x - lambd/L
+    for i in range(3) :
+        if y_pos[i] > 0 :
+            if y_negs[i] < 0 :
+                if (y_pos[i]-x[i])^2 + np.abs(y_pos[i])*lambd/L < (x[i]-y_negs[i])^2 + np.abs(y_negs[i])*lambd/L :
+                    to_return[i] = y_pos[i]
+                else :
+                    to_return[i] = y_negs[i]
+            else : to_return[i] = y_pos[i]
+        else :
+            to_return[i] = y_negs[i]
+
+    return to_return
+
+
+def prox_func (x, y, L) :
+    toreturn = np.norm(x-y)**2/2 + L*np.norm(y,1)
+    return toreturn
+
+
+def proximal_gradient_method(m, X, b, functions, L, lambd) :
+
+    alpha = np.zeros((m,5))
+    while True :
+        alpha = alpha - 1/L*gradient_q2(X, m, b)
+        alpha = prox(alpha,L,lambd)
+        if np.linalg.norm(gradient_q2(X, m, b)) < 1e-5 :
+            break
+        break
+
+    return
+
+def find_b(X,m) :
+
+    to_return = np.zeros((np.shape(X)[0], np.shape(X)[1]))
+
+    for l in range (len(X)) :
+        for i in range(m-1) :
+            to_return[l][i] = X[l][i+1] - X[l][i]
+    to_return[l][m-1] = X[l][m-1] - X[l][m-2]
+
+    return to_return
+
+def all_functions(x) :
+    return [x[0], x[1], x[2], x[0]*x[1], x[1]*x[2]]
+
+def question2() :
+
+    m = 200
+
+    fun = pandemic_model
+
+    X = spi.solve_ivp(fun, [0, m], [0.995, 0.005, 0], t_eval=np.linspace(0, m, m))
+
+    b = find_b(X.y, m) 
+
+    L = 1
+
+    lambd = 1
+
+    functions = all_functions
+
+    proximal_gradient_method(m, X, b, functions, L, lambd)
 
     return
 if __name__ == "__main__" :
-    question1()
+    question2()
