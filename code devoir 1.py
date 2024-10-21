@@ -80,6 +80,9 @@ def question1() :
 def gradient_q2 (alpha, X, m, b, thetas) :
     ###A FAIRE ENCORE###
     to_return = np.zeros((3,5))
+    print ('b :', b)
+    print ('alpha :', alpha)
+    print ('thetas :', thetas)
     for l in range(3) :
         for i in range(m) :
             for k in range(5) :
