@@ -77,12 +77,13 @@ def question1() :
     plt.imshow(X_new)
     plt.show()
 
-def gradient_q2 (alpha, m, b) :
+def gradient_q2 (alpha, X, m, b) :
     ###A FAIRE ENCORE###
-    to_return = np.zeros((alpha.shape[0]))
+    to_return = np.zeros((alpha.shape[0], alpha.shape[1]))
     for i in range(5) :
         for j in range(m) :
-            to_return[i] += 2*(alpha[i][j] - b[i][j])
+            #to_return[i] += 2*(alpha[i][j] - b[i][j])
+            break
 
     return to_return
             
@@ -99,21 +100,23 @@ def pandemic_model(t, x):
         return [dSdt, dIdt, dRdt]
 
 def prox(alpha, L, lambd) :
-    y = minimizer(alpha, L, lambd)
+    y = np.zeros((3,5))
+    for i in range(3) :
+        y[i] = minimizer(alpha[i], L, lambd)
     return y
 
 def minimizer(x, L, lambd) :
 
-    to_return = np.zeros(3)
-    y_negs = np.zeros(3)
-    y_pos = np.zeros(3)
+    to_return = np.zeros(5)
+    y_negs = np.zeros(5)
+    y_pos = np.zeros(5)
     
     y_pos[:] = x + lambd/L
     y_negs[:] = x - lambd/L
-    for i in range(3) :
+    for i in range(5) :
         if y_pos[i] > 0 :
             if y_negs[i] < 0 :
-                if (y_pos[i]-x[i])^2 + np.abs(y_pos[i])*lambd/L < (x[i]-y_negs[i])^2 + np.abs(y_negs[i])*lambd/L :
+                if (y_pos[i]-x[i])**2 + np.abs(y_pos[i])*lambd/L < (x[i]-y_negs[i])**2 + np.abs(y_negs[i])*lambd/L :
                     to_return[i] = y_pos[i]
                 else :
                     to_return[i] = y_negs[i]
@@ -131,11 +134,11 @@ def prox_func (x, y, L) :
 
 def proximal_gradient_method(m, X, b, functions, L, lambd) :
 
-    alpha = np.zeros((m,5))
+    alpha = np.zeros((3,5))
     while True :
-        alpha = alpha - 1/L*gradient_q2(X, m, b)
+        alpha = alpha - 1/L*gradient_q2(alpha, X, m, b)
         alpha = prox(alpha,L,lambd)
-        if np.linalg.norm(gradient_q2(X, m, b)) < 1e-5 :
+        if np.linalg.norm(gradient_q2(alpha,X, m, b)) < 1e-5 :
             break
         break
 
@@ -167,7 +170,7 @@ def question2() :
 
     L = 1
 
-    lambd = 1
+    lambd = 1e-3
 
     functions = all_functions
 
