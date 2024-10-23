@@ -25,7 +25,7 @@ def R_prime(X) :
     to_return = np.zeros((np.shape(X)[0], np.shape(X)[1]))
     for i in range(1, len(X)-1) :
         for j in range(1, np.shape(X)[1]-1) :
-            to_return[i][j] = 2*X[i][j]*4 - 2*X[i+1][j] - 2*X[i-1][j] - 2*X[i][j+1] - 2*X[i][j-1]
+            to_return[i][j] = 8*X[i][j] - 2*X[i+1][j] - 2*X[i-1][j] - 2*X[i][j+1] - 2*X[i][j-1]
     return to_return
 
 def projected_gradient_method(X, image, epsilon, lambd, L) :
@@ -78,7 +78,7 @@ def question1() :
     plt.imshow(X_new)
     plt.show()
 
-def gradient_q2 (alpha, X, m, b, thetas) :
+def gradient_q2 (alpha, m, b, thetas) :
     ###A FAIRE ENCORE###
     to_return = np.zeros((3,5))
     print ('b :', b)
@@ -87,8 +87,11 @@ def gradient_q2 (alpha, X, m, b, thetas) :
     for l in range(3) :
         for i in range(m) :
             for k in range(5) :
-                to_return[l][k] += b[l][i]-alpha[l][k]*thetas[i][k]
-
+                to_return[l][k] -= b[l][i]
+                for j in range(5) :
+                    to_return[l][k] += thetas[i][j]*alpha[l][j]
+                to_return[l][k] *= thetas[i][k]
+    print ('gradient :', to_return)
     return to_return
             
             
@@ -129,13 +132,6 @@ def prox(alpha, L, lambd) :
 
     return to_return"""
 
-
-def prox_func (x, y, L) :
-    
-    to_return = np.norm(x-y)**2/2 + L*np.norm(y,1)
-    return to_return
-
-
 def proximal_gradient_method(m, X, b, functions, L, lambd) :
 
     alpha = np.zeros((3,5))
@@ -143,15 +139,19 @@ def proximal_gradient_method(m, X, b, functions, L, lambd) :
     for i in range(m) :
         thetas[i,:] = functions(X[:,i])
 
+    i = 0
     while True :
-        grad = gradient_q2(alpha, X, m, b, thetas)
+        grad = gradient_q2(alpha, m, b, thetas)
         alpha = alpha - 1/L*grad
         alpha = prox(alpha,L,lambd)
+        i+=1
+        print ('norm grad :', np.linalg.norm(grad))
         if np.linalg.norm(grad) < 1e-5 :
             break
-        #break
+        if i > 3 :
+            break
 
-    return
+    return alpha
 
 def find_b(X,m) :
 
@@ -160,7 +160,7 @@ def find_b(X,m) :
     for l in range (len(X)) :
         for i in range(m-1) :
             to_return[l][i] = X[l][i+1] - X[l][i]
-    to_return[l][m-1] = X[l][m-1] - X[l][m-2]
+        to_return[l][m-1] = X[l][m-1] - X[l][m-2]
 
     return to_return
 
@@ -177,13 +177,13 @@ def question2() :
 
     b = find_b(X.y, m) 
 
-    L = 1
+    L = 3
 
     lambd = 1e-3
 
     functions = all_functions
 
-    proximal_gradient_method(m, X.y, b, functions, L, lambd)
+    alphas = proximal_gradient_method(m, X.y, b, functions, L, lambd)
 
     return
 if __name__ == "__main__" :
