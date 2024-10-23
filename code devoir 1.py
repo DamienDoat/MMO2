@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import integrate as spi
+import numba
 
 def function(X, image, lambd) :
     return np.sum((X - image)**2)/2 + R(X)*lambd
@@ -13,18 +14,20 @@ def R(X) :
 
     return to_return
 
+@numba.jit(nopython=True, parallel=True)
 def gradient(X, image, lambd) :
     to_return = np.zeros((np.shape(X)[0], np.shape(X)[1]))
-    for i in range(0, len(X)) :
-        for j in range(0, np.shape(X)[1]) :
+    for i in numba.prange(0, len(X)) :
+        for j in numba.prange(0, np.shape(X)[1]) :
             to_return[i][j] = X[i][j] - image[i][j]
     to_return = np.reshape(to_return, (np.shape(X)[0], np.shape(X)[1]))
     return to_return + R_prime(X)*lambd
 
+@numba.jit(nopython=True, parallel=True)
 def R_prime(X) :
     to_return = np.zeros((np.shape(X)[0], np.shape(X)[1]))
-    for i in range(1, len(X)-1) :
-        for j in range(1, np.shape(X)[1]-1) :
+    for i in numba.prange(1, len(X)-1) :
+        for j in numba.prange(1, np.shape(X)[1]-1) :
             to_return[i][j] = 8*X[i][j] - 2*X[i+1][j] - 2*X[i-1][j] - 2*X[i][j+1] - 2*X[i][j-1]
     return to_return
 
@@ -32,15 +35,18 @@ def projected_gradient_method(X, image, epsilon, lambd, L) :
     k = 0
     while True :
         grad = gradient(X, image, lambd)
-        frobenius_norm_grad = np.linalg.norm(grad)
+        #frobenius_norm_grad = np.linalg.norm(grad)
         k += 1
+        old = X
+        X = X - grad/L
+        X = np.clip(X, 0, 255)
+        G = L*(old-X)
+        norm_G = np.linalg.norm(G, 'fro')
         print ('X:', X)
         print ('gradient:', grad)
-        print ('gradient norm:', frobenius_norm_grad)
+        print ('gradient norm:', norm_G)
         print('biggest grad componant:', np.max(grad))
-        X = X - grad / L
-        X = np.clip(X, 0, 255)
-        if np.linalg.norm(frobenius_norm_grad) < epsilon :
+        if norm_G < epsilon :
             break
     
     return X
@@ -56,8 +62,8 @@ def read_image(image_path):
 def question1() :
     image = read_image("son_goku.png")
     epsilon = 1e-5
-    lambd = 1
-    L = (1+4*lambd)*4
+    lambd = 5
+    L = np.sqrt(5)*(1+16*lambd)
     X_red = image[:,:,0]
     X_green = image[:,:,1]
     X_blue = image[:,:,2]
@@ -187,4 +193,4 @@ def question2() :
 
     return
 if __name__ == "__main__" :
-    question2()
+    question1()
