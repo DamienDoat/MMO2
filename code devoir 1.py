@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import integrate as spi
+
 def function(X, image, lambd) :
     return np.sum((X - image)**2)/2 + R(X)*lambd
 
@@ -104,10 +105,10 @@ def pandemic_model(t, x):
 def prox(alpha, L, lambd) :
     y = np.zeros((3,5))
     for i in range(3) :
-        y[i] = minimizer(alpha[i], L, lambd)
+        y[i] = np.maximum(0, np.abs(alpha[i]) - lambd/L)*np.sign(alpha[i])
     return y
 
-def minimizer(x, L, lambd) :
+"""def minimizer(x, L, lambd) :
 
     to_return = np.zeros(5)
     y_negs = np.zeros(5)
@@ -126,12 +127,13 @@ def minimizer(x, L, lambd) :
         else :
             to_return[i] = y_negs[i]
 
-    return to_return
+    return to_return"""
 
 
 def prox_func (x, y, L) :
-    toreturn = np.norm(x-y)**2/2 + L*np.norm(y,1)
-    return toreturn
+    
+    to_return = np.norm(x-y)**2/2 + L*np.norm(y,1)
+    return to_return
 
 
 def proximal_gradient_method(m, X, b, functions, L, lambd) :
