@@ -26,9 +26,19 @@ def gradient(X, image, lambd) :
 @numba.jit(nopython=True, parallel=True)
 def R_prime(X) :
     to_return = np.zeros((np.shape(X)[0], np.shape(X)[1]))
-    for i in numba.prange(1, len(X)-1) :
-        for j in numba.prange(1, np.shape(X)[1]-1) :
+    m,n = np.shape(X)[0], np.shape(X)[1]
+    
+    to_return[1][1] = 4*X[1][1] - 2*X[2][1] - 2*X[1][2]
+    to_return[1][n-1] = 2*X[1][n-1] - 2*X[2][n-1]
+    to_return[m-1][1] = 2*X[m-1][1] - 2*X[m-2][1]
+    for i in numba.prange(2, m-1) :
+        to_return[i][1] = 6*X[i][1] - 2*X[i+1][1] - 2*X[i-1][1] - 2*X[i][2]
+        to_return[1][i] = 6*X[1][i] - 2*X[2][i] - 2*X[1][i+1] - 2*X[1][i-1]
+        to_return[i,n-1] = 2*X[i,n-1] - 2*X[i,n-2]
+        to_return[m-1,i] = 2*X[m-1,i] - 2*X[m-2,i]
+        for j in numba.prange(2, n-1) :
             to_return[i][j] = 8*X[i][j] - 2*X[i+1][j] - 2*X[i-1][j] - 2*X[i][j+1] - 2*X[i][j-1]
+    
     return to_return
 
 def projected_gradient_method(X, image, epsilon, lambd, L) :
@@ -42,10 +52,11 @@ def projected_gradient_method(X, image, epsilon, lambd, L) :
         X = np.clip(X, 0, 255)
         G = L*(old-X)
         norm_G = np.linalg.norm(G, 'fro')
-        print ('X:', X)
-        print ('gradient:', grad)
-        print ('gradient norm:', norm_G)
-        print('biggest grad componant:', np.max(grad))
+        if k%10 == 0 :
+            print ('X:', X)
+            print ('gradient:', grad)
+            print ('gradient norm:', norm_G)
+            print('biggest grad componant:', np.max(grad))
         if norm_G < epsilon :
             break
     
