@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import integrate as spi
 import numba
+import time 
 
 def function(X, image, lambd) :
     return np.sum((X - image)**2)/2 + R(X)*lambd
@@ -95,38 +96,132 @@ def question1() :
     plt.imshow(X_new)
     plt.show()
 
-def gradient_q2 (alpha, m, b, thetas) :
-    ###A FAIRE ENCORE###
-    to_return = np.zeros((3,5))
-    print ('b :', b)
-    print ('alpha :', alpha)
-    print ('thetas :', thetas)
-    for l in range(3) :
-        for i in range(m) :
-            for k in range(5) :
-                to_return[l][k] -= b[l][i]
-                for j in range(5) :
-                    to_return[l][k] += thetas[i][j]*alpha[l][j]
-                to_return[l][k] *= thetas[i][k]
-    print ('gradient :', to_return)
-    return to_return
-            
-            
-def pandemic_model(t, x):
-        # Example model, replace with actual equations
-        beta = 0.3
-        gamma = 0.1
-        S, I, R = x
-        dSdt = -beta * S * I
-        dIdt = beta * S * I - gamma * I
-        dRdt = gamma * I
-        return [dSdt, dIdt, dRdt]
+####QUESTION II #####
 
-def prox(alpha, L, lambd) :
-    y = np.zeros((3,5))
-    for i in range(3) :
+def pandemic_model(t, x):
+    beta = 0.2
+    gamma = 0.05
+    S, I, R = x
+    dSdt = -beta*S*I
+    dIdt = beta*S*I - gamma*I
+    dRdt = gamma*I
+    return [dSdt, dIdt, dRdt]
+
+def SYNDy(t,x):
+    dS = np.dot(all_functions(x),globall[0])
+    dI = np.dot(all_functions(x),globall[1])
+    dR = np.dot(all_functions(x),globall[2])
+    return np.array([dS, dI, dR])
+
+def find_b(X,m) :
+    to_return = np.zeros((np.shape(X)[0], np.shape(X)[1]))
+    for l in range (len(X)) :
+        for i in range(m-1) :
+            to_return[l][i] = X[l][i+1] - X[l][i]
+        to_return[l][m-1] = X[l][m-1] - X[l][m-2]
+
+    return to_return
+
+def all_functions(x) :
+    return np.array([x[0], x[1], x[2], x[0]*x[1], x[1]*x[2]])
+
+@numba.jit(nopython=True, parallel=True)
+def gradient_q2 (alpha, b, thetas) :
+    m = np.shape(thetas)[0]
+    p = len(alpha)
+    to_return = np.zeros(p)
+    temp = 0
+    for k in numba.prange(p):
+        for i in numba.prange(m):
+            temp = -b[i]
+            for j in numba.prange(p):
+                temp += alpha[j]*thetas[i][j]
+            to_return[k] += thetas[i][k]*temp
+    return to_return
+
+def prox(alpha , L, lambd) :
+    p =len(alpha)
+    y = np.zeros(p)
+    for i in range(p) :
         y[i] = np.maximum(0, np.abs(alpha[i]) - lambd/L)*np.sign(alpha[i])
     return y
+
+def proximal_gradient_method(alpha, b, theta, L, lambd) :
+
+    k = 0
+    while True :
+        print("iteration :", k)
+        old = alpha
+        grad1 = gradient_q2(alpha, b, theta)
+        alpha = alpha - (1/L)*grad1
+        alpha = prox(alpha,L,lambd)
+        k += 1
+        G_L = L*(old - alpha)
+        norm_G_L = np.linalg.norm(G_L)
+        #print("regularizer: ", lambd*np.linalg.norm(alpha, ord=1))
+        #print("grad :", grad1)
+        #print("gradient norm :", np.linalg.norm(grad1, ord=2))
+        #print("my next alpha :", alpha)
+        #fonction_value = (1/2)*np.linalg.norm(b-(theta@alpha),ord=2)**2 + lambd*np.linalg.norm(alpha,ord=1)
+        #print("valeur de ma fonction:", fonction_value)
+        print ('G_L :', norm_G_L)
+        if norm_G_L < 1e-5 :
+            return alpha
+        #time.sleep(3)
+
+globall = 0.0
+
+def question2() :
+    #2.1
+    m = 201
+    p = 5
+    n = 3
+
+    fun = pandemic_model
+    sol = spi.solve_ivp(fun, [0, m-1], [0.995, 0.005, 0], t_eval=np.linspace(0, m-1, m))
+    b = find_b(sol.y, m).T 
+    X = sol.y.T   
+
+    with open("data.txt", "x") as file:
+        file.write("X matrix \n" + str(X) + "\n")
+        file.write("b vectors \n" + str(b) + "\n")
+
+    alpha = np.ones((n,p))*0.5
+    thetas = np.zeros((m,5))
+    for i in range(m):
+        thetas[i] = all_functions(X[i])
+    L = 100
+    lambd = 1e-3
+
+    for i in range(0,n):
+        print("\n Resolution de la " + str(i+1) + "eme edo:")
+        alpha[i] = proximal_gradient_method(alpha[i], b[:,i], thetas, L, lambd)
+        time.sleep(3)
+        print(alpha)
+
+    global globall 
+    globall = alpha
+    sol2 = spi.solve_ivp(SYNDy, [0, m-1], [0.995, 0.005, 0], t_eval=np.linspace(0, m-1, m))
+    X2 = sol2.y.T
+
+    plt.figure()
+    plt.plot(np.linspace(0,m-1,m),X2[:,0], color='cyan')
+    plt.plot(np.linspace(0,m-1,m),X2[:,1], color='magenta')
+    plt.plot(np.linspace(0,m-1,m),X2[:,2], color='yellow')
+    plt.plot(np.linspace(0,m-1,m),X[:,0], color='blue')
+    plt.plot(np.linspace(0,m-1,m),X[:,1], color='green')
+    plt.plot(np.linspace(0,m-1,m),X[:,2], color='red')
+    plt.show()
+
+    return alpha
+
+
+
+if __name__ == "__main__" :
+    question2()
+
+
+
 
 """def minimizer(x, L, lambd) :
 
@@ -148,60 +243,3 @@ def prox(alpha, L, lambd) :
             to_return[i] = y_negs[i]
 
     return to_return"""
-
-def proximal_gradient_method(m, X, b, functions, L, lambd) :
-
-    alpha = np.zeros((3,5))
-    thetas = np.zeros((m,5))
-    for i in range(m) :
-        thetas[i,:] = functions(X[:,i])
-
-    i = 0
-    while True :
-        grad = gradient_q2(alpha, m, b, thetas)
-        alpha = alpha - 1/L*grad
-        alpha = prox(alpha,L,lambd)
-        i+=1
-        print ('norm grad :', np.linalg.norm(grad))
-        if np.linalg.norm(grad) < 1e-5 :
-            break
-        if i > 3 :
-            break
-
-    return alpha
-
-def find_b(X,m) :
-
-    to_return = np.zeros((np.shape(X)[0], np.shape(X)[1]))
-
-    for l in range (len(X)) :
-        for i in range(m-1) :
-            to_return[l][i] = X[l][i+1] - X[l][i]
-        to_return[l][m-1] = X[l][m-1] - X[l][m-2]
-
-    return to_return
-
-def all_functions(x) :
-    return [x[0], x[1], x[2], x[0]*x[1], x[1]*x[2]]
-
-def question2() :
-
-    m = 200
-
-    fun = pandemic_model
-
-    X = spi.solve_ivp(fun, [0, m], [0.995, 0.005, 0], t_eval=np.linspace(0, m, m))
-
-    b = find_b(X.y, m) 
-
-    L = 3
-
-    lambd = 1e-3
-
-    functions = all_functions
-
-    alphas = proximal_gradient_method(m, X.y, b, functions, L, lambd)
-
-    return
-if __name__ == "__main__" :
-    question1()
