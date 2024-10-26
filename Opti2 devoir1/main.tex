@@ -1,6 +1,8 @@
 \documentclass{article}
 \usepackage{graphicx} % Required for inserting images
 \usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsfonts}
 
 \geometry{a4paper, margin=1in}
 \title{\textbf{LINMA2171} \\ Homework I}
@@ -14,6 +16,75 @@
 \hrulefill
 \vspace{1cm}
 
-\section{Exercice1}
+\section*{Projected Gradient Method}
+\subsection*{(a) Computation of $\nabla f_{l}(.)$}
+\begin{equation*}
+\begin{split} 
+\nabla f_l(X)_{kl} & = \frac{\partial}{\partial_{kl}}\frac{1}{2}\sum_{i=1}^{m}
+\sum_{j=1}^{n}(X_{ij} - Y_{ij})^2 + \frac{\partial}{\partial_{kl}}\lambda\sum_{i=2}^{m-1}\sum_{j=2}^{n-1}
+(X_{i+1,j} - X_{i,j})^2 + (X_{i,j+1} - X_{i,j})^2 \\
+                   & = \frac{1}{2}\sum_{i=1}^{m}\sum_{j=1}^{n}\frac{\partial}{\partial_{kl}}
+(X_{ij} - Y_{ij})^2 + \lambda\sum_{i=2}^{m-1}\sum_{j=2}^{n-1}\frac{\partial}{\partial_{kl}}
+(X_{i+1,j} - X_{i,j})^2 + \frac{\partial}{\partial_{kl}}(X_{i,j+1} - X_{i,j})^2 \\
+                   & = (X_{kl} - Y_{kl}) + \lambda[2(X_{k,l} - X_{k-1,l}) - 2(X_{k+1,l} - X_{k,l}) 
+                   + 2(X_{k,l} - X_{k,l-1}) - 2(X_{k,l+1} - X_{k,l})] \\
+                   & = (X_{k,l} - Y_{k,l}) + 8\lambda X_{kl} - 2\lambda X_{k-1,l} - 2\lambda X_{k+1,l} 
+                   - 2\lambda X_{k,l-1} - 2\lambda X_{k,l+1} 
+\end{split}
+\end{equation*}
+This is a general expression for the $kl$ component of the gradient, but we give a more precise 
+expression hereafter to consider the "corner cases"
+
+$$
+\nabla f_l(X)_{kl} =  
+                \begin{cases}
+                (X_{kl} - Y_{kl})  & \text{if $i=1$ and/or $j=1$ orif $k=m$ and $l=n$}  \\
+                (X_{kl} - Y_{kl}) + 4\lambda X_{kl} - 2\lambda X_{k+1,l} - 2\lambda X_{k,l+1} 
+                & \text{if i=2 and j=2} \\
+                (X_{kl} - Y_{kl}) + 6\lambda X_{kl} - 2\lambda X_{k+1,l} - 2\lambda X_{k,l-1}
+                -2\lambda X_{k,l+1}  
+                & \text{k=2 and l geq2} \\
+                (X_{kl} - Y_{kl}) + 6\lambda X_{kl} - 2\lambda X_{k,l+1} - 2\lambda X_{k-1,l}
+                -2\lambda X_{k+1,l}  
+                & \text{l=2 and k$\geq$2} \\
+                (X_{kl} - Y_{kl}) + 2\lambda X_{kl} - 2\lambda X_{k-1,l} 
+                & \text{k=m and $2\geq l\leq m$} \\
+                (X_{kl} - Y_{kl}) + 2\lambda X_{kl} - 2\lambda X_{k,l-1} 
+                & \text{$l=m$ and $2\geq k\leq n$} \\
+                (X_{kl} - Y_{kl}) + 8\lambda X_{kl} - 2\lambda X_{k-1,l} - 2\lambda X_{k+1,l} 
+                -2\lambda X_{k,l-1} - 2\lambda X_{k,l+1} 
+                & \text{else} 
+                \end{cases}
+$$
+
+
+\subsection*{(b) $\nabla f_{l}(.)$ $L$-Lipschitz derivation}
+We recall that a function $F : \mathbb{R}^n \to \mathbb{R}^n$ is $L$-Lipschitz if there exists 
+a constant $L$ such that $ ||F(x) - F(y)|| \leq L||x-y|| \forall x,y \in \mathbb{R}^n$.
+To find L for $\nabla f_l(.)$, we will consider the general case of the derivation above, 
+since it will lead to upper bound for the corner cases and we will assume a 0 value for out of 
+bounds index. This leads to:
+
+\begin{equation*}
+\begin{split}
+||F(x) - F(y)||^2  & \leq \sum_{i=1}^{m}\sum_{j=1}{n}(|X_{i,j} - Y_{i,j}| + 8\lambda|X_{i,j}
+-Y_{i,j}| + 2\lambda|X_{i,j+1} - Y_{i,j+1}| + 2\lambda|X_{i,j-1} - Y_{i,j-1}| + 
+2\lambda|X_{i+1,j} - Y_{i+1,j}| + 2\lambda|X_{i-1,j} - Y_{i-1,j}|)^2 \\
+                       & = \sum_{i=1}^{m}\sum_{j=1}^{n}(|\Delta_{ij}| + 8|\lambda\Delta_{ij}|
+                       + 2\lambda|\Delta_{i-1,j}| + 2\lambda|\Delta_{i+1,j} 
+                       + 2\lambda|\Delta_{i,j-1}| + 2\lambda|\Delta_{i,j+1})^2 \\
+                       & \leq 5\sum_{i=1}^{m}\sum_{j=1}^{n}(|\Delta_{i,j} + 16\lambda|\Delta_{i,j})
+                       ^2 \\
+                       & = \sum_{i=1}^{m}\sum_{j=1}^{n}(\sqrt{5}(1+16\lambda))^2(\Delta_{i,j})^2
+\end{split}
+\end{equation*}
+
+Where we can identify the L constant, 
+
+\subsection*{(c) $f_{l}(.)$ convexity derivation}
+\subsection*{(e) Result of PGM}
+\subsection*{(f) Relation between $\lambda$ and the quality}
+
+\section*{Proximal Gradient Method}
 
 \end{document}
