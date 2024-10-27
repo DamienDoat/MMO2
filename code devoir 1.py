@@ -30,13 +30,15 @@ def R_prime(X) :
     m,n = np.shape(X)[0], np.shape(X)[1]
     
     to_return[1][1] = 4*X[1][1] - 2*X[2][1] - 2*X[1][2]
-    to_return[1][n-1] = 2*X[1][n-1] - 2*X[2][n-1]
-    to_return[m-1][1] = 2*X[m-1][1] - 2*X[m-2][1]
-    for i in numba.prange(2, m-1) :
+    for i in numba.prange(2,m-1):
         to_return[i][1] = 6*X[i][1] - 2*X[i+1][1] - 2*X[i-1][1] - 2*X[i][2]
-        to_return[1][i] = 6*X[1][i] - 2*X[2][i] - 2*X[1][i+1] - 2*X[1][i-1]
+    for i in numba.prange(1,m-1):
         to_return[i,n-1] = 2*X[i,n-1] - 2*X[i,n-2]
-        to_return[m-1,i] = 2*X[m-1,i] - 2*X[m-2,i]
+    for j in numba.prange(2,n-1):
+        to_return[1][j] = 6*X[1][j] - 2*X[2][j] - 2*X[1][j+1] - 2*X[1][j-1]
+    for j in numba.prange(1,n-1):
+        to_return[m-1,j] = 2*X[m-1,j] - 2*X[m-2,j]
+    for i in numba.prange(2, m-1) :
         for j in numba.prange(2, n-1) :
             to_return[i][j] = 8*X[i][j] - 2*X[i+1][j] - 2*X[i-1][j] - 2*X[i][j+1] - 2*X[i][j-1]
     
@@ -54,9 +56,10 @@ def projected_gradient_method(X, image, epsilon, lambd, L) :
         G = L*(old-X)
         norm_G = np.linalg.norm(G, 'fro')
         if k%10 == 0 :
-            print ('X:', X)
-            print ('gradient:', grad)
-            print ('gradient norm:', norm_G)
+            print('iteration :', k)
+            #print ('X:', X)
+            #print ('gradient:', grad)
+            print('G_L norm: ', norm_G)
             print('biggest grad componant:', np.max(grad))
         if norm_G < epsilon :
             break
@@ -74,7 +77,7 @@ def read_image(image_path):
 def question1() :
     image = read_image("son_goku.png")
     epsilon = 1e-5
-    lambd = 5
+    lambd = 0.1
     L = np.sqrt(5)*(1+16*lambd)
     X_red = image[:,:,0]
     X_green = image[:,:,1]
@@ -92,8 +95,8 @@ def question1() :
     X_new[:,:,1] = X_new_green
     X_new[:,:,2] = X_new_blue
 
-
     plt.imshow(X_new)
+    plt.savefig("Goku_lambda_0_1.png")
     plt.show()
 
 ####QUESTION II #####
@@ -182,16 +185,16 @@ def question2() :
     b = find_b(sol.y, m).T 
     X = sol.y.T   
 
-    with open("data.txt", "x") as file:
-        file.write("X matrix \n" + str(X) + "\n")
-        file.write("b vectors \n" + str(b) + "\n")
+    #with open("data.txt", "x") as file:
+    #    file.write("X matrix \n" + str(X) + "\n")
+    #    file.write("b vectors \n" + str(b) + "\n")
 
     alpha = np.ones((n,p))*0.5
     thetas = np.zeros((m,5))
     for i in range(m):
         thetas[i] = all_functions(X[i])
-    L = 100
-    lambd = 1e-3
+    L = 1000
+    lambd = 1e-1
 
     for i in range(0,n):
         print("\n Resolution de la " + str(i+1) + "eme edo:")
@@ -205,12 +208,16 @@ def question2() :
     X2 = sol2.y.T
 
     plt.figure()
-    plt.plot(np.linspace(0,m-1,m),X2[:,0], color='cyan')
-    plt.plot(np.linspace(0,m-1,m),X2[:,1], color='magenta')
-    plt.plot(np.linspace(0,m-1,m),X2[:,2], color='yellow')
-    plt.plot(np.linspace(0,m-1,m),X[:,0], color='blue')
-    plt.plot(np.linspace(0,m-1,m),X[:,1], color='green')
-    plt.plot(np.linspace(0,m-1,m),X[:,2], color='red')
+    plt.title("SIR model")
+    plt.xlabel("Temps")
+    plt.ylabel("Population")
+    plt.plot(np.linspace(0,m-1,m),X2[:,0], color='cyan', linestyle='--', label="SINDy S")
+    plt.plot(np.linspace(0,m-1,m),X2[:,1], color='magenta', linestyle='--', label="SINDy I")
+    plt.plot(np.linspace(0,m-1,m),X2[:,2], color='yellow', linestyle='--', label="SINDy R")
+    plt.plot(np.linspace(0,m-1,m),X[:,0], color='blue', label = "S")
+    plt.plot(np.linspace(0,m-1,m),X[:,1], color='green', label ="I")
+    plt.plot(np.linspace(0,m-1,m),X[:,2], color='red', label = "R")
+    plt.legend(loc = 'upper right')
     plt.show()
 
     return alpha

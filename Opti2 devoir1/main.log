@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.3.7)  27 OCT 2024 01:20
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.3.7)  27 OCT 2024 19:40
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -131,39 +131,61 @@ Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
 LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+) (C:\Users\damie\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption.sty
+Package: caption 2023/08/05 v3.6o Customizing captions (AR)
+ (C:\Users\damie\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption3.sty
+Package: caption3 2023/07/31 v2.4d caption3 kernel (AR)
+\caption@tempdima=\dimen160
+\captionmargin=\dimen161
+\caption@leftmargin=\dimen162
+\caption@rightmargin=\dimen163
+\caption@width=\dimen164
+\caption@indent=\dimen165
+\caption@parindent=\dimen166
+\caption@hangindent=\dimen167
+Package caption Info: Standard document class detected.
+)
+\c@caption@flags=\count277
+\c@continuedfloat=\count278
+) (C:\Users\damie\AppData\Local\Programs\MiKTeX\tex/latex/caption\subcaption.sty
+Package: subcaption 2023/07/28 v1.6b Sub-captions (AR)
+Package caption Info: New subtype `subfigure' on input line 238.
+\c@subfigure=\count279
+Package caption Info: New subtype `subtable' on input line 238.
+\c@subtable=\count280
 ) (C:\Users\damie\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-02-20 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count277
+\l__color_backend_stack_int=\count281
 \l__pdf_internal_box=\box53
 ) (main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
  (C:\Users\damie\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count278
-\scratchdimen=\dimen160
+\scratchcounter=\count282
+\scratchdimen=\dimen168
 \scratchbox=\box54
-\nofMPsegments=\count279
-\nofMParguments=\count280
+\nofMPsegments=\count283
+\nofMParguments=\count284
 \everyMPshowfont=\toks24
-\MPscratchCnt=\count281
-\MPscratchDim=\dimen161
-\MPnumerator=\count282
-\makeMPintoPDFobject=\count283
+\MPscratchCnt=\count285
+\MPscratchDim=\dimen169
+\MPnumerator=\count286
+\makeMPintoPDFobject=\count287
 \everyMPtoPDFconversion=\toks25
 ) (C:\Users\damie\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -205,43 +227,86 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 14.
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 17.
 (C:\Users\damie\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 14.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 17.
  (C:\Users\damie\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Overfull \hbox (99.53911pt too wide) detected at line 58
-\OMS/cmsy/m/n/10 r\OML/cmm/m/it/10 f[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 X\OT1/cmr/m/n/10 )[] = []
+Overfull \hbox (7.27872pt too wide) detected at line 37
+[]
  []
 
 
-Overfull \hbox (181.78906pt too wide) detected at line 80
-[]
+Overfull \hbox (14.73663pt too wide) detected at line 63
+\OMS/cmsy/m/n/10 r\OML/cmm/m/it/10 f[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 X\OT1/cmr/m/n/10 )[] = []
  []
 
 [1
 
-{C:/Users/damie/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}] [2] (main.aux)
+{C:/Users/damie/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
+<images/Goku_lambda_0_1.png, id=18, 462.528pt x 346.896pt>
+File: images/Goku_lambda_0_1.png Graphic file (type png)
+<use images/Goku_lambda_0_1.png>
+Package pdftex.def Info: images/Goku_lambda_0_1.png  used on input line 133.
+(pdftex.def)             Requested size: 217.42265pt x 163.0676pt.
+<images/Goku_lambda_1.png, id=20, 462.528pt x 346.896pt>
+File: images/Goku_lambda_1.png Graphic file (type png)
+<use images/Goku_lambda_1.png>
+Package pdftex.def Info: images/Goku_lambda_1.png  used on input line 140.
+(pdftex.def)             Requested size: 217.42265pt x 163.0676pt.
+<images/Goku_lambda_5.png, id=21, 462.528pt x 346.896pt>
+File: images/Goku_lambda_5.png Graphic file (type png)
+<use images/Goku_lambda_5.png>
+Package pdftex.def Info: images/Goku_lambda_5.png  used on input line 147.
+(pdftex.def)             Requested size: 217.42265pt x 163.0676pt.
+<images/Goku_lambda_10.png, id=22, 462.528pt x 346.896pt>
+File: images/Goku_lambda_10.png Graphic file (type png)
+<use images/Goku_lambda_10.png>
+Package pdftex.def Info: images/Goku_lambda_10.png  used on input line 154.
+(pdftex.def)             Requested size: 217.42265pt x 163.0676pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[2] [3 <./images/Goku_lambda_0_1.png> <./images/Goku_lambda_1.png> <./images/Goku_lambda_5.png> <./images/Goku_lambda_10.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 189--194
+
+ []
+
+<images/SIR.png, id=36, 462.528pt x 346.896pt>
+File: images/SIR.png Graphic file (type png)
+<use images/SIR.png>
+Package pdftex.def Info: images/SIR.png  used on input line 228.
+(pdftex.def)             Requested size: 362.37569pt x 271.79521pt.
+[4 <./images/SIR.png>]
+<images/SIR_lambd_1e-1.png, id=41, 462.528pt x 346.896pt>
+File: images/SIR_lambd_1e-1.png Graphic file (type png)
+<use images/SIR_lambd_1e-1.png>
+Package pdftex.def Info: images/SIR_lambd_1e-1.png  used on input line 264.
+(pdftex.def)             Requested size: 362.37569pt x 271.79521pt.
+ [5 <./images/SIR_lambd_1e-1.png>] (main.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 2684 strings out of 474456
- 41899 string characters out of 5742734
- 1943190 words of memory out of 5000000
- 24989 multiletter control sequences out of 15000+600000
- 565931 words of font info for 67 fonts, out of 8000000 for 9000
+ 4226 strings out of 474456
+ 71928 string characters out of 5742734
+ 1946190 words of memory out of 5000000
+ 26518 multiletter control sequences out of 15000+600000
+ 567644 words of font info for 74 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,16n,65p,307b,220s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (2 pages, 145483 bytes).
+ 57i,19n,65p,327b,542s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/damie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on main.pdf (5 pages, 1747303 bytes).
 PDF statistics:
- 74 PDF objects out of 1000 (max. 8388607)
+ 111 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 31 words of extra memory for PDF output out of 10000 (max. 10000000)
 
