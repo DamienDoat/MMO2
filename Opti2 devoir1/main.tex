@@ -45,20 +45,20 @@ $$
                 (X_{k,l} - Y_{k,l})  & \text{if $k=1$ and/or $l=1$} \\
                                    & \text{or if $k=m$ and $l=n$}  \\
                 (X_{k,l} - Y_{k,l}) + \lambda [4X_{k,l} - 2X_{k+1,l} - 2X_{k,l+1}]
-                & \text{if i=2 and j=2} \\
+                & \text{if $i=2$ and $j=2$} \\
                 (X_{k,l} - Y_{k,l}) + \lambda[6X_{k,l} - 2X_{k+1,l} - 2X_{k,l-1}
                 -2X_{k,l+1}]  
-                & \text{k=2 and $3\leq l\leq n-1$} \\
+                & \text{if $k=2$ and $3\leq l\leq n-1$} \\
                 (X_{k,l} - Y_{k,l}) + \lambda[6X_{k,l} - 2X_{k,l+1} - 2X_{k-1,l}
                 -2X_{k+1,l}]  
-                & \text{l=2 and $3\leq k\leq m-1$} \\
+                & \text{if $l=2$ and $3\leq k\leq m-1$} \\
                 (X_{k,l} - Y_{k,l}) + \lambda[2X_{k,l} - 2X_{k-1,l}] 
-                & \text{k=m and $2\leq l\leq n-1$} \\
+                & \text{if $k=m$ and $2\leq l\leq n-1$} \\
                 (X_{k,l} - Y_{k,l}) + \lambda[2X_{k,l} - 2X_{k,l-1}] 
-                & \text{$l=n$ and $2\leq k\leq m-1$} \\
+                & \text{if $l=n$ and $2\leq k\leq m-1$} \\
                 (X_{k,l} - Y_{k,l}) + \lambda[8X_{k,l} - 2X_{k-1,l} - 2X_{k+1,l} 
                 -2X_{k,l-1} - 2X_{k,l+1}] 
-                & \text{else} 
+                & \text{otherwise} 
                 \end{cases}
 $$
 
